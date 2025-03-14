@@ -2,14 +2,11 @@ name: bert-gpt2-env
 channels:
   - nvidia
   - pytorch
-  - conda-forge
   - defaults
 dependencies:
   - python=3.9
   - pip
   - pytorch
-  - torchvision
-  - torchaudio
   - pytorch-cuda=12.1  # CUDA support for PyTorch
   - transformers
   - datasets
