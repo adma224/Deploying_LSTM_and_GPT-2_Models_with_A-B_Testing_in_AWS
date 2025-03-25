@@ -1,10 +1,10 @@
-# 📦 A/B Model Inference Pipeline with AWS CDK and CI/CD
+# :poodle: A/B Model Inference Pipeline with AWS CDK and CI/CD
 
 This project demonstrates a scalable, production-style A/B inference pipeline using AWS CDK, Lambda, API Gateway, and SageMaker. It includes a fully automated CI/CD pipeline powered by GitHub Actions and is designed to showcase mid-level skills in AWS Cloud Engineering, DevOps, Machine Learning Engineering, and MLOps.
 
 ---
 
-## 🧠 Project Goals
+## Project Goals
 
 - Deploy and manage multiple ML models using AWS SageMaker
 - Route inference requests using an A/B testing mechanism
@@ -15,7 +15,7 @@ This project demonstrates a scalable, production-style A/B inference pipeline us
 
 ---
 
-## 🚀 Live Project Phases
+## Live Project Phases
 
 This is a multi-phase portfolio project. Each phase adds production-level capabilities:
 
@@ -33,7 +33,7 @@ This is a multi-phase portfolio project. Each phase adds production-level capabi
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 **Cloud Infrastructure**
 - AWS CDK (Python)
