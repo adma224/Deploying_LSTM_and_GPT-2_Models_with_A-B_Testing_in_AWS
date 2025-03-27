@@ -47,7 +47,7 @@ jobs:
 
       - name: 📊 CDK diff
         run: |
-          cd cdk/stacks
+          cd cdk/
           npx cdk diff
 
   deploy:
