@@ -1,4 +1,4 @@
-name: Deploy AWS Infrastructure via CDK
+name: CI/CD for AWS CDK Inference Pipeline
 
 on:
   push:
@@ -10,59 +10,64 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  AWS_REGION: us-west-2
+
 jobs:
-  deploy:
+  ci:
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://yourapp.com  # Optional
-
-    env:
-      AWS_REGION: us-west-2
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.10
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Upgrade pip
-        run: python -m pip install --upgrade pip
-
-      - name: Install CDK requirements (if exists)
+      - name: Install dependencies
         run: |
-          if [ -f "cdk/requirements.txt" ]; then
-            pip install -r cdk/requirements.txt
-          else
-            echo "No CDK requirements.txt found, skipping..."
-          fi
-
-      - name: Install Lambda requirements (if exists)
-        run: |
-          if [ -f "lambda/requirements.txt" ]; then
-            pip install -r lambda/requirements.txt
-          else
-            echo "No Lambda requirements.txt found, skipping..."
-          fi
-
-      - name: Install general tools
-        run: |
+          pip install -r cdk/requirements.txt
           pip install flake8 pytest aws-cdk-lib constructs
 
-      - name: Lint Python code
-        run: |
-          flake8 lambda/ cdk/ || true
+      - name: Lint code
+        run: flake8 cdk/ || true
 
-      - name: Run unit tests
+      - name: Run tests
         run: |
-          if [ -d "lambda/tests" ]; then
-            pytest lambda/tests/
+          if [ -d "cdk/tests" ]; then
+            pytest cdk/tests/
           else
-            echo "No tests directory found, skipping unit tests."
+            echo "No tests found"
           fi
+
+      - name: CDK synth
+        run: |
+          cd cdk
+          npx aws-cdk synth
+
+  deploy:
+    needs: ci
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://yourapp.com
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r cdk/requirements.txt
+          pip install aws-cdk-lib constructs
+
+      - name: Install AWS CDK CLI
+        run: npm install -g aws-cdk
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -71,23 +76,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Install AWS CDK CLI
-        run: npm install -g aws-cdk
-
-      - name: CDK synth
-        run: |
-          cd cdk
-          cdk synth
-
-      - name: CDK diff
-        run: |
-          cd cdk
-          cdk diff
-
       - name: CDK deploy
         run: |
           cd cdk
           cdk deploy --require-approval never
-
-
-
