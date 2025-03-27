@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
 import aws_cdk as cdk
-from cdk_stack import CdkStack
+from infra_stack import InfraStack
+from gpt2_inference_stack import Gpt2InferenceStack
 
 app = cdk.App()
-CdkStack(app, "cdk_ml_pipeline_stack.py")
-app.synth()
 
+infra = InfraStack(app, "InfraStack")
+
+InferenceStack(
+    app,
+    "InferenceStack",
+    artifact_bucket=infra.artifact_bucket,
+    sagemaker_role=infra.sagemaker_role
+)
+
+app.synth()

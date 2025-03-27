@@ -1,7 +1,7 @@
 import aws_cdk as core
 import aws_cdk.assertions as assertions
 
-from cdk_ml_pipeline.cdk_ml_pipeline_stack import CdkMlPipelineStack
+from cdk.cdk.cdk_ml_pipeline import CdkMlPipelineStack
 
 # example tests. To run these tests, uncomment this file along with the example
 # resource in cdk_ml_pipeline/cdk_ml_pipeline_stack.py
