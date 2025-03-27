@@ -1,8 +1,8 @@
 import aws_cdk as core
 import aws_cdk.assertions as assertions
 
-from cdk.inference_stack import Gpt2InferenceStack
-from cdk.infra_stack import InfraStack
+from stacks.inference_stack import InferenceStack
+from stacks.infra_stack import InfraStack
 
 
 # example tests. To run these tests, uncomment this file along with the example
