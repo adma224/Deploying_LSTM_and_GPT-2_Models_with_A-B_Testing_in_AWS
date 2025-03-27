@@ -13,8 +13,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://yourapp.com  # Optional; use if you want a UI link
+
     env:
-      AWS_REGION: us-west-2  # Change this to your region
+      AWS_REGION: us-west-2
 
     steps:
       - name: Checkout code
@@ -72,7 +76,13 @@ jobs:
           cd cdk
           cdk synth
 
+      - name: CDK diff
+        run: |
+          cd cdk
+          cdk diff
+
       - name: CDK deploy
         run: |
           cd cdk
           cdk deploy --require-approval never
+
