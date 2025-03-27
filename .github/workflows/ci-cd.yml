@@ -5,8 +5,7 @@ on:
     branches: [main]
     paths:
       - 'cdk/**'
-      - 'lambda/**'
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/ci-cd.yml'
   pull_request:
     branches: [main]
 
@@ -14,13 +13,14 @@ env:
   AWS_REGION: us-west-2
 
 jobs:
-  ci:
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -31,32 +31,32 @@ jobs:
           pip install flake8 pytest aws-cdk-lib constructs
 
       - name: Lint code
-        run: flake8 cdk/ || true
-
-      - name: Run tests
         run: |
-          if [ -d "cdk/tests" ]; then
-            pytest cdk/tests/
-          else
-            echo "No tests found"
-          fi
+          flake8 cdk/stacks/ || true
+
+      - name: Run unit tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:./cdk
+          pytest cdk/tests/
 
       - name: CDK synth
         run: |
-          cd cdk
-          npx aws-cdk synth
+          cd cdk/stacks
+          npx cdk synth
 
   deploy:
-    needs: ci
+    name: Deploy
+    needs: validate
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://yourapp.com
+      url: https://yourapp.com  # Optional
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -78,5 +78,5 @@ jobs:
 
       - name: CDK deploy
         run: |
-          cd cdk
+          cd cdk/stacks
           cdk deploy --require-approval never
