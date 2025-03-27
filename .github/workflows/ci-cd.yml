@@ -42,7 +42,7 @@ jobs:
 
       - name: 🛠 CDK synth
         run: |
-          cd cdk/stacks
+          cd cdk/
           npx cdk synth
 
       - name: 📊 CDK diff

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import aws_cdk as cdk
-from infra_stack import InfraStack
-from gpt2_inference_stack import Gpt2InferenceStack
+from stacks.infra_stack import InfraStack
+from stacks.inference_stack import Gpt2InferenceStack
 
 app = cdk.App()
 
