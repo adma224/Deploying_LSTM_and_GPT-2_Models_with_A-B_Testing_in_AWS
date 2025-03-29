@@ -10,12 +10,12 @@ class InferenceStack(Stack):
     def __init__(self, scope: Construct, id: str, artifact_bucket, sagemaker_role, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        # Load latest model path from SSM
+        # Load latest model path from SSM (optional placeholder for future use)
         model_path_param = ssm.StringParameter.from_string_parameter_name(
             self, "LatestModelPathParam",
             string_parameter_name="/ml-pipeline/s3/latest-model-path"
         )
-        # This creates a SageMaker model from your uploaded artifact.
+
         model = sagemaker.CfnModel(
             self, "Gpt2Model",
             execution_role_arn=sagemaker_role.role_arn,
@@ -25,7 +25,6 @@ class InferenceStack(Stack):
             }
         )
 
-        # This defines the configuration for the endpoint — including memory and concurrency.
         endpoint_config = sagemaker.CfnEndpointConfig(
             self, "Gpt2EndpointConfig",
             production_variants=[{
@@ -37,9 +36,16 @@ class InferenceStack(Stack):
                 }
             }]
         )
-        # This actually deploys the endpoint, using the model + config above.
-        sagemaker.CfnEndpoint(
+
+        endpoint = sagemaker.CfnEndpoint(
             self, "Gpt2Endpoint",
             endpoint_config_name=endpoint_config.attr_endpoint_config_name
         )
+
+        # ✅ Must happen *after* `endpoint` is defined
+        ssm.StringParameter(self, "EndpointNameParam",
+            parameter_name="/ml-pipeline/sagemaker/endpoint-name",
+            string_value=endpoint.attr_endpoint_name
+        )
+
 
