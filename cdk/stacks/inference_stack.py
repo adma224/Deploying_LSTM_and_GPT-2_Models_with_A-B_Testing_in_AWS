@@ -10,12 +10,6 @@ class InferenceStack(Stack):
     def __init__(self, scope: Construct, id: str, artifact_bucket, sagemaker_role, **kwargs):
         super().__init__(scope, id, **kwargs)
 
-        # Load latest model path from SSM (optional placeholder for future use)
-        model_path_param = ssm.StringParameter.from_string_parameter_name(
-            self, "LatestModelPathParam",
-            string_parameter_name="/ml-pipeline/s3/latest-model-path"
-        )
-
         model = sagemaker.CfnModel(
             self, "Gpt2Model",
             execution_role_arn=sagemaker_role.role_arn,
