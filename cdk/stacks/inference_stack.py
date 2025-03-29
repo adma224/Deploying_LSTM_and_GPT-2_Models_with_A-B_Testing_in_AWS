@@ -4,6 +4,8 @@ from aws_cdk import (
 )
 from constructs import Construct
 
+
+
 class InferenceStack(Stack):
 
     def __init__(self, scope: Construct, id: str, artifact_bucket, sagemaker_role, **kwargs):

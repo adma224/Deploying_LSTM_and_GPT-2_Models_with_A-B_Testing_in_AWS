@@ -14,7 +14,7 @@ class InfraStack(Stack):
         # Named S3 bucket for model artifacts
         self.artifact_bucket = s3.Bucket(
             self, "ModelArtifactBucket",
-            bucket_name="gpt2-artifacts-bucket",  # must be globally unique
+            bucket_name="model-artifacts-bucket",  # must be globally unique
             versioned=True,
             removal_policy=RemovalPolicy.DESTROY,
             auto_delete_objects=True

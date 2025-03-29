@@ -1,23 +1,18 @@
 name: ml-dev
 channels:
+  - pytorch       
   - conda-forge
   - defaults
 dependencies:
   - python=3.10
   - ipykernel
   - notebook
-  - ipywidgets
   - pandas
   - numpy
-  - matplotlib
-  - scikit-learn
-  - transformers
-  - datasets
-  - torch
   - boto3
   - sagemaker
-  - seaborn
-  - tqdm
+  - transformers
   - pip
+  - pytorch       
   - pip:
       - sentencepiece
