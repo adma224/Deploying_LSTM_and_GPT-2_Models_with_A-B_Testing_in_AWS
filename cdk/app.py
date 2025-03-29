@@ -7,11 +7,11 @@ app = cdk.App()
 
 infra = InfraStack(app, "InfraStack")
 
-# InferenceStack(
-#     app,
-#     "InferenceStack",
-#     artifact_bucket=infra.artifact_bucket,
-#     sagemaker_role=infra.sagemaker_role
-# )
+InferenceStack(
+    app,
+    "InferenceStack",
+    artifact_bucket=infra.artifact_bucket,
+    sagemaker_role=infra.sagemaker_role
+)
 
 app.synth()

@@ -21,9 +21,10 @@ class InferenceStack(Stack):
             execution_role_arn=sagemaker_role.role_arn,
             primary_container={
                 "image": "763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-inference:2.1.1-cpu-py310-ubuntu20.04",
-                "modelDataUrl": f"s3://{artifact_bucket.bucket_name}/{model_path_param.string_value}"
+                "modelDataUrl": "s3://infrastack-modelartifactbucketf271bf2c-xgmpcko1h6hz/gpt2-v1/v20250328-235901/model.tar.gz"
             }
         )
+
         # This defines the configuration for the endpoint — including memory and concurrency.
         endpoint_config = sagemaker.CfnEndpointConfig(
             self, "Gpt2EndpointConfig",
