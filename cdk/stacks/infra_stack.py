@@ -20,16 +20,15 @@ class InfraStack(Stack):
             versioned=True
         )
 
-        # Save the bucket name to SSM Parameter Store
+        # Save bucket name to SSM
         ssm.StringParameter(self, "ModelArtifactBucketNameParam",
             parameter_name="/ml-pipeline/s3/model-artifact-bucket",
             string_value=self.artifact_bucket.bucket_name
         )
 
-        # Output for visibility in console
+        # Output for visibility
         CfnOutput(self, "ArtifactBucketName", value=self.artifact_bucket.bucket_name)
 
-        # IAM role for SageMaker
         self.sagemaker_role = iam.Role(
             self, "SageMakerExecutionRole",
             assumed_by=iam.ServicePrincipal("sagemaker.amazonaws.com"),
