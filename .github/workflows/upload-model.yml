@@ -1,0 +1,39 @@
+name: Upload Model to S3
+
+on:
+  push:
+    paths:
+      - 'models/**'
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-west-2
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install boto3
+        run: pip install boto3
+
+      - name: Set AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload model artifacts to S3
+        env:
+          S3_BUCKET_NAME: your-artifact-bucket-name  # ✅ Replace with your actual bucket name or read from a file
+        run: python scripts/upload_model.py

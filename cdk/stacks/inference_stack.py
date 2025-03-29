@@ -16,7 +16,7 @@ class InferenceStack(Stack):
             execution_role_arn=sagemaker_role.role_arn,
             primary_container={
                 "image": "763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-inference:2.1.1-cpu-py310-ubuntu20.04",
-                "modelDataUrl": f"s3://{artifact_bucket.bucket_name}/gpt2-v1/model.tar.gz"
+                "modelDataUrl": f"s3://{artifact_bucket.bucket_name}/gpt2-v2/model.tar.gz"
             }
         )
 

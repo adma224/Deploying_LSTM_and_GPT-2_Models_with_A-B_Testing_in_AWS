@@ -16,3 +16,9 @@ dependencies:
   - pytorch       
   - pip:
       - sentencepiece
+      - transformers[torch]
+      - tensorboard
+
+# matplotlib
+# nltk
+# torch accelerate

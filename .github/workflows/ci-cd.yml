@@ -98,6 +98,6 @@ jobs:
       - name: 🚀 CDK deploy
         run: |
           cd cdk/
-          cdk deploy --require-approval never
+          cdk deploy --require-approval never --verbose
 
 
