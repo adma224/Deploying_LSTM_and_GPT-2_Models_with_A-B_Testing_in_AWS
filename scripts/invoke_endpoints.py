@@ -7,7 +7,7 @@ param = ssm.get_parameter(Name="/ml-pipeline/sagemaker/endpoint-name", WithDecry
 endpoint_name = param["Parameter"]["Value"]
 
 # Prompt input
-payload = {"inputs": "Once upon a time,"}
+payload = {"inputs": "Today in the world"}
 
 # Invoke endpoint
 sm = boto3.client("sagemaker-runtime")
@@ -17,7 +17,12 @@ response = sm.invoke_endpoint(
     Body=json.dumps(payload)
 )
 
-# Read and print result
-result = json.loads(response["Body"].read())
-print("📜 Generated text:", result[0]["generated_text"])
+# Parse result
+body = response["Body"].read()
+result = json.loads(body)
 
+# Print result
+if isinstance(result, list) and "generated_text" in result[0]:
+    print("📜 Generated text:", result[0]["generated_text"])
+else:
+    print("⚠️ Unexpected output format:", result)

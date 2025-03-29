@@ -50,4 +50,4 @@ jobs:
       - name: 🚀 Deploy CDK with new model path
         run: |
           cd cdk/
-          cdk deploy --require-approval never
+          cdk deploy --require-approval never --all
